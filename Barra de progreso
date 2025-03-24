@@ -1,0 +1,17 @@
+const ProgressBar = () => {
+  const percentage = 30; // Esto será dinámico más adelante
+
+  return (
+    <div className="max-w-md mx-auto mt-5">
+      <h2 className="text-lg font-semibold mb-2">Progreso General</h2>
+      <div className="w-full bg-gray-200 rounded-full h-4">
+        <div
+          className={`h-full rounded-full ${percentage < 33 ? "bg-red-500" : percentage < 66 ? "bg-yellow-500" : "bg-green-500"}`}
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+export default ProgressBar;
