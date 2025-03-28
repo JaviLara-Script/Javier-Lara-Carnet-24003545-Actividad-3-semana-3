@@ -1,0 +1,81 @@
+// frontend/tailwind.config.js
+module.exports = {
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// frontend/store/habitsSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  habits: [
+    { id: 1, name: "Read 10 pages", completed: false },
+    { id: 2, name: "Exercise 30 minutes", completed: false },
+    { id: 3, name: "Meditate 5 minutes", completed: false },
+  ],
+};
+
+const habitsSlice = createSlice({
+  name: "habits",
+  initialState,
+  reducers: {},
+});
+
+export const selectHabits = (state) => state.habits.habits;
+export default habitsSlice.reducer;
+
+// frontend/store/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import habitsReducer from "./habitsSlice";
+
+export const store = configureStore({
+  reducer: {
+    habits: habitsReducer,
+  },
+});
+
+// frontend/pages/_app.js
+import "../styles/globals.css";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  );
+}
+
+export default MyApp;
+
+// frontend/pages/index.js
+import { useSelector } from "react-redux";
+import { selectHabits } from "../store/habitsSlice";
+
+export default function Home() {
+  const habits = useSelector(selectHabits);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center p-10 bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6">Habit Tracker</h1>
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+        {habits.map((habit) => (
+          <div key={habit.id} className="flex justify-between items-center py-2 border-b">
+            <span>{habit.name}</span>
+            <button className="px-3 py-1 bg-gray-300 text-gray-700 rounded">Done</button>
+          </div>
+        ))}
+        <div className="mt-4">
+          <p className="text-sm text-gray-500">Progress</p>
+          <div className="w-full bg-gray-200 rounded-full h-4 mt-1">
+            <div className="bg-green-500 h-4 rounded-full" style={{ width: "30%" }}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
