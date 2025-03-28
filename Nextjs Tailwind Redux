@@ -1,0 +1,32 @@
+// pages/index.js
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleHabit } from '@/store';
+
+export default function Home() {
+  const habits = useSelector(state => state.habits);
+  const dispatch = useDispatch();
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-10">
+      <h1 className="text-3xl font-bold text-center mb-6">Habit Tracker</h1>
+      <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow-md">
+        <ul>
+          {habits.map(habit => (
+            <li key={habit.id} className="flex justify-between items-center p-3 border-b">
+              <span>{habit.name}</span>
+              <button 
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                onClick={() => dispatch(toggleHabit(habit.id))}
+              >
+                Done
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4 h-4 bg-gray-300 rounded-full overflow-hidden">
+          <div className="h-full bg-green-500 w-1/4"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
